@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: cdielk
+  name: kibana-config
+  labels:
+    app: kibana
+data:
+  kibana.yml: |-
+    server.host: 0.0.0.0
+
+    elasticsearch:
+      hosts: ${ELASTICSEARCH_HOSTS}
+      username: ${ELASTICSEARCH_USER}
+      password: ${ELASTICSEARCH_PASSWORD}
+      ssl.verificationMode: none
+      ssl.certificateAuthorities: /usr/share/kibana/config/cert/elasticsearch-ca.pem
+    server.ssl.enabled: true
+    server.ssl.certificate: /usr/share/kibana/config/cert/kibana.crt
+    server.ssl.key: /usr/share/kibana/config/cert/kibana-server.key

@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: cdielk
+  name: elasticsearch-ingest
+  labels:
+    app: elasticsearch
+    role: ingest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+      role: ingest
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+        role: ingest
+    spec:
+      containers:
+      - name: elasticsearch-ingest
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+        env:
+        - name: CLUSTER_NAME
+          value: elasticsearch
+        - name: NODE_NAME
+          value: elasticsearch-ingest
+        - name: NODE_LIST
+          value: elasticsearch-master,elasticsearch-data,elasticsearch-ingest
+        - name: MASTER_NODES
+          value: elasticsearch-master
+        - name: "ES_JAVA_OPTS"
+          value: "-Xms256m -Xmx256m"
+        - name: ELASTIC_USERNAME
+          value: elastic
+        - name: ELASTIC_PASSWORD
+          valueFrom:
+           secretKeyRef:
+             name: mysecret
+             key: password
+        ports:
+        - containerPort: 9200
+          name: ingest
+        - containerPort: 9300
+          name: transport
+        volumeMounts:
+        - name: config
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          readOnly: true
+          subPath: elasticsearch.yml
+        - name: storage
+          mountPath: /data
+        - name: elasticsearch-cert     
+          mountPath: /usr/share/elasticsearch/config/cert
+          readOnly: true
+        resources:
+          requests:
+           memory: "1Gi"
+      volumes:
+      - name: config
+        configMap:
+          name: es-ingest-config
+      - name: storage
+        emptyDir:
+          medium: ""
+      - name: elasticsearch-cert
+        secret:
+            secretName: elasticsearch-cert
+      initContainers:
+      - name: increase-vm-max-map
+        image: busybox
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
