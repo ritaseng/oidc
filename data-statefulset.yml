@@ -30,6 +30,12 @@ spec:
         - name: elasticsearch-cert
           secret:
             secretName: elasticsearch-cert
+        - name: elasticsearch-keystore
+          secret:
+            secretName: elasticsearch-keystore
+        - name: oidc-cert
+          secret:
+            secretName: oidc-cert
       initContainers:
       - name: increase-vm-max-map
         image: busybox
@@ -79,6 +85,11 @@ spec:
           - name: elasticsearch-cert
             mountPath: /usr/share/elasticsearch/config/cert
             readOnly: true
+          - name: elasticsearch-keystore
+            mountPath: /usr/share/elasticsearch/config/elasticsearch.keystore
+            subPath: elasticsearch.keystore
+          - name: oidc-cert
+            mountPath: /usr/share/elasticsearch/config/oidc
         resources:
           requests:
             memory: "1Gi"

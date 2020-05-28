@@ -30,3 +30,14 @@ data:
     xpack.security.transport.ssl.truststore.password: Welcome@321
     xpack.security.http.ssl.keystore.password: Welcome@321
     xpack.security.transport.ssl.keystore.password: Welcome@321
+    xpack.security.authc.realms.oidc.oidc1:
+      order: 2
+      rp.client_id: "OWI4NWE0ZjMtOGYyZC00"
+      rp.response_type: code
+      rp.redirect_uri: https://158.177.75.186:5601/api/security/oidc/callback
+      op.issuer: "https://idaas.iam.ibm.com"
+      op.authorization_endpoint: "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/authorize"
+      op.token_endpoint: "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/token"
+      op.jwkset_path: /usr/share/elasticsearch/config/oidc/jwkset.json
+      op.userinfo_endpoint: "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/userinfo"
+      claims.principal: email
