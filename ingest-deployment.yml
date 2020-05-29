@@ -29,7 +29,7 @@ spec:
         - name: NODE_LIST
           value: elasticsearch-master,elasticsearch-data,elasticsearch-ingest
         - name: MASTER_NODES
-          value: elasticsearch-master
+          value: elasticsearch-data
         - name: "ES_JAVA_OPTS"
           value: "-Xms256m -Xmx256m"
         - name: ELASTIC_USERNAME
