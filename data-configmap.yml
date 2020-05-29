@@ -15,10 +15,10 @@ data:
     network.host: 0.0.0.0
     path.data: /usr/share/elasticsearch/data
     node:
-      master: false
+      master: true
       data: true
       ingest: false
-
+      max_local_storage_nodes: 20
     xpack.security.enabled: true
     xpack.monitoring.collection.enabled: true
     xpack.security.http.ssl.enabled: true
@@ -30,11 +30,13 @@ data:
     xpack.security.transport.ssl.truststore.password: Welcome@321
     xpack.security.http.ssl.keystore.password: Welcome@321
     xpack.security.transport.ssl.keystore.password: Welcome@321
+    xpack.security.http.ssl.supported_protocols: TLSv1, TLSv1.1, TLSv1.2
+    xpack.security.authc.token.enabled: true
     xpack.security.authc.realms.oidc.oidc1:
       order: 2
       rp.client_id: "OWI4NWE0ZjMtOGYyZC00"
       rp.response_type: code
-      rp.redirect_uri: https://158.177.75.186:5601/api/security/oidc/callback
+      rp.redirect_uri: https://158.177.75.186:5601/api/security/v1/oidc
       op.issuer: "https://idaas.iam.ibm.com"
       op.authorization_endpoint: "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/authorize"
       op.token_endpoint: "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/token"
